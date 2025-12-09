@@ -1,0 +1,39 @@
+{
+  "name": "ccip-ton-typescript-test",
+  "version": "1.0.0",
+  "description": "TypeScript examples for cross-chain messaging between TON and EVM chains using Chainlink CCIP",
+  "main": "index.js",
+  "scripts": {
+    "deploy:evm": "npx hardhat run scripts/deploy/deployReceiver.ts --network sepolia",
+    "deploy:ton": "tsx scripts/deploy/deployTONReceiver.ts",
+    "evm2ton:send": "tsx scripts/evm2ton/sendMessage.ts",
+    "ton2evm:send": "tsx scripts/ton2evm/sendMessage.ts",
+    "utils:checkEVM": "tsx scripts/utils/checkMessageOnEVM.ts",
+    "utils:checkTON": "tsx scripts/utils/checkMessageOnTON.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@chainlink/contracts-ccip": "^1.6.2",
+    "@openzeppelin/contracts": "^5.0.2",
+    "@ton/core": "^0.62.0",
+    "@ton/crypto": "^3.3.0",
+    "@ton/ton": "^16.0.0",
+    "@types/node": "^24.9.1",
+    "dotenv": "^17.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.2",
+    "@tact-lang/compiler": "^1.6.13",
+    "@ton-community/func-js": "^0.11.0",
+    "@ton/blueprint": "^0.41.0",
+    "@ton/tolk-js": "^1.1.0",
+    "ethers": "^6.15.0",
+    "hardhat": "^3.0.7",
+    "tsx": "^4.20.6"
+  }
+}
