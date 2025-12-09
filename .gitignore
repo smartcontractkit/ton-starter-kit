@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.env
+*.log
+
+# Build artifacts
+artifacts/
+cache/
+out/
+broadcast/
+
+# Debug/Testing files
+*_ANALYSIS.md
+*_REPORT.md
+*_RESULTS.md
+*_STATUS.md
+*_GUIDE.md
+QUICK_START.md
+TEST_*.md
