@@ -1,8 +1,5 @@
 {
-  "name": "ccip-ton-typescript-test",
-  "version": "1.0.0",
-  "description": "TypeScript examples for cross-chain messaging between TON and EVM chains using Chainlink CCIP",
-  "main": "index.js",
+  "name": "ccip-ton-starter-kit",
   "scripts": {
     "deploy:evm": "npx hardhat run scripts/deploy/deployReceiver.ts --network sepolia",
     "deploy:ton": "tsx scripts/deploy/deployTONReceiver.ts",
@@ -11,12 +8,8 @@
     "utils:checkEVM": "tsx scripts/utils/checkMessageOnEVM.ts",
     "utils:checkTON": "tsx scripts/utils/checkMessageOnTON.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
   "dependencies": {
-    "@chainlink/contracts-ccip": "^1.6.2",
+    "@chainlink/contracts-ccip": "1.6.2",
     "@openzeppelin/contracts": "^5.0.2",
     "@ton/core": "^0.62.0",
     "@ton/crypto": "^3.3.0",

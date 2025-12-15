@@ -27,8 +27,19 @@ export const AVALANCHE_FUJI = {
   EXPLORER: 'https://testnet.snowtrace.io',
 };
 
+const TON_RPC_URL = (() => {
+  let url = process.env.TON_RPC_URL || 'https://testnet.toncenter.com/api/v2/jsonRPC';
+  const apiKey = process.env.TON_API_KEY;
+  
+  if (apiKey && !url.includes('api_key=')) {
+    url += `${url.includes('?') ? '&' : '?'}api_key=${apiKey}`;
+  }
+  
+  return url;
+})();
+
 export const TON_TESTNET = {
-  RPC_URL: process.env.TON_RPC_URL!,
+  RPC_URL: TON_RPC_URL,
   ROUTER: process.env.TON_ROUTER!,
   OFFRAMP: process.env.TON_OFFRAMP!,
   CHAIN_SELECTOR: BigInt(process.env.TON_CHAIN_SELECTOR!),
