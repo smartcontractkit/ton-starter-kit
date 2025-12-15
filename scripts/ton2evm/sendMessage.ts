@@ -45,38 +45,19 @@ async function sendTONToEVM() {
   const destChainSelector = SEPOLIA.CHAIN_SELECTOR
   const evmReceiverAddr = CONTRACTS.EVM_RECEIVER
   const feeToken = Address.parseRaw('0:0000000000000000000000000000000000000000000000000000000000000001')
-  
-  console.log('📍 Router (from 1-pager):', routerAddress.toString())
-  console.log('📍 EVM Receiver:', evmReceiverAddr)
-  console.log('📍 Destination Chain:', 'Sepolia (', destChainSelector.toString(), ')')
-  console.log('📍 Following 1-pager TypeScript example EXACTLY\n')
-
-  // Build ExtraArgs - EXACTLY as per 1-pager TypeScript example
-  console.log('🔧 Building ExtraArgs (1-pager format)...')
   const extraArgs = beginCell()
     .storeUint(0x181dcf10, 32)   // GenericExtraArgsV2 tag
     .storeBit(true)               // gasLimit IS present
     .storeUint(1_000_000, 256)    // gasLimit value (EVM gas units)
     .storeBit(true)               // allowOutOfOrderExecution
     .endCell()
-  console.log('✅ ExtraArgs built')
   
-  // Build message data - EXACTLY as per 1-pager
-  console.log('🔧 Building message data...')
-  const data = beginCell()
+    const data = beginCell()
     .storeStringTail('Hello EVM from TON')
     .endCell()
-  console.log('✅ Message data built')
-  
-  // Prepare receiver: left-pad to 32 bytes - EXACTLY as per 1-pager
-  console.log('🔧 Encoding receiver address...')
+
   const addrBytes = Buffer.from(evmReceiverAddr.slice(2), 'hex')
   const padded = Buffer.concat([Buffer.alloc(12, 0), addrBytes])
-  console.log('   Padded length:', padded.length, 'bytes')
-  console.log('✅ Receiver address encoded\n')
-  
-  // Build CCIPSend message - EXACTLY as per 1-pager TypeScript example
-  console.log('🔧 Building CCIPSend message (1-pager format)...')
   const ccipSend = beginCell()
     .storeUint(0x31768d95, 32)              // CCIPSend opcode
     .storeUint(0, 64)                        // queryID
@@ -88,11 +69,6 @@ async function sendTONToEVM() {
     .storeAddress(feeToken)                  // feeToken (native TON)
     .storeRef(extraArgs)                     // extraArgs
     .endCell()
-  console.log('✅ CCIPSend message constructed\n')
-  
-  // Send transaction - EXACTLY as per 1-pager
-  // Value should cover CCIP fee + gas. Use Router_GetValidatedFee for exact fee.
-  console.log('📤 Sending transaction to Router...')
   
   const seqno = await walletContract.getSeqno()
   await walletContract.sendTransfer({
@@ -106,15 +82,8 @@ async function sendTONToEVM() {
       })
     ]
   })
-
+  
   console.log('✅ Transaction sent!\n')
-  console.log('📋 Test Details:')
-  console.log('   Following: 1-pager TypeScript example EXACTLY')
-  console.log('   Opcode: 0x31768d95 (Router_CCIPSend)')
-  console.log('   Destination: Router (not wrapped, direct)')
-  console.log('   Structure: As documented in 1-pager\n')
-  console.log('⏳ Message is being processed by CCIP network...')
-  console.log('⏳ Expected delivery: 5-15 minutes (staging environment)\n')
   console.log('🔍 Monitor your transaction:')
   console.log(`   ${TON_TESTNET.EXPLORER}/${wallet.address.toString()}\n`)
   console.log('🔍 Monitor delivery on Sepolia:')
