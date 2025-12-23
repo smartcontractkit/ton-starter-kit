@@ -14,8 +14,8 @@ async function main() {
   // TON OffRamp address from staging environment
   const TON_OFFRAMP = TON_TESTNET.OFFRAMP;
 
-  // Connect to TON
-  const endpoint = process.env.TON_RPC_URL || 'https://testnet.toncenter.com/api/v2/jsonRPC';
+  // Connect to TON (API key is automatically included if TON_API_KEY is set in .env)
+  const endpoint = TON_TESTNET.RPC_URL;
   const client = new TonClient({ endpoint });
 
   // Load wallet from mnemonic

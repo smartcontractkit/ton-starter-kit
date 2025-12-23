@@ -44,13 +44,6 @@ async function sendEVMToTON() {
   // Chain selector from Network Information
   const destChainSelector = TON_TESTNET.CHAIN_SELECTOR
   const tonReceiverAddr = CONTRACTS.TON_RECEIVER
-
-  console.log('📍 Router:', SEPOLIA.ROUTER)
-  console.log('📍 TON Receiver:', tonReceiverAddr)
-  console.log('📍 Destination: TON Testnet (', destChainSelector.toString(), ')\n')
-
-  // Convert TON address to bytes
-  console.log('🔧 Encoding TON receiver address...')
   const tonAddr = Address.parse(tonReceiverAddr)
 
   // FROM chainlink-ton/pkg/ccip/codec/addresscodec.go:
@@ -65,23 +58,14 @@ async function sendEVMToTON() {
     workchainBytes,  // 4 bytes for workchain (int32)
     accountId  // 32 bytes for address hash
   ])
-  console.log('✅ TON address encoded:', ethers.hexlify(receiverBytes).slice(0, 20) + '...')
 
-  // Simple text message data
-  console.log('🔧 Building message data...')
   const messageData = ethers.toUtf8Bytes('Hello TON from EVM')
-  console.log('✅ Message data built')
-
-  // "EVM > TON Schema" - GenericExtraArgsV2
-  // Must be TRUE for TON destinations
-  console.log('🔧 Building extraArgs...')
   const abiCoder = ethers.AbiCoder.defaultAbiCoder()
   const extraArgs = abiCoder.encode(
     ['uint256', 'bool'],
     [100_000_000, true] // gasLimit in nanoTON (0.1 TON = 100,000,000 nanoTON), allowOutOfOrderExecution
   )
   const extraArgsWithTag = ethers.concat(['0x181dcf10', extraArgs]) // GENERIC_EXTRA_ARGS_V2_TAG
-  console.log('✅ ExtraArgs built\n')
 
   const message = {
     receiver: receiverBytes,
@@ -91,17 +75,8 @@ async function sendEVMToTON() {
     extraArgs: extraArgsWithTag
   }
 
-  // "EVM Fee Estimation"
-  console.log('💰 Getting fee quote...')
   const fee = await router.getFee(destChainSelector, message)
-  console.log('   Fee:', ethers.formatEther(fee), 'ETH')
-
-  // "Add 10-20% buffer for safety"
   const feeWithBuffer = (fee * 110n) / 100n
-  console.log('   Fee with buffer:', ethers.formatEther(feeWithBuffer), 'ETH\n')
-
-  // Send message
-  console.log('📤 Sending transaction...')
   const tx = await router.ccipSend(destChainSelector, message, { 
     value: feeWithBuffer 
   })
