@@ -13,18 +13,21 @@ Before you begin, ensure you have:
 
 ## TON Wallet Setup
 
-To interact with TON testnet, you need a wallet and its 24-word recovery phrase (mnemonic).
+To interact with TON testnet, you need a wallet and its 24-word recovery phrase (mnemonic). If you already have a mnemonic, skip to step 7.
 
-1. Download [TON Keeper](https://tonkeeper.com/) on iOS or Android
-2. On the first run, you'll have to create a new wallet
-3. Copy the 24-word recovery phrase by selecting the Gear icon then Backup
-4. Select "Back Up Manually" and Continue to save the recovery phrase to a safe location. This is your `TON_MNEMONIC`
-5. Go back to the main Wallet screen, select the wallet drop-down, and choose "Add Wallet"
-6. Scroll to the bottom and select "Testnet Account"
-7. Type in the 24-word recovery phrase you saved earlier and select "Continue"
-8. Name the wallet "Testnet Wallet" and select Continue
-9. Select the Gear icon and select V4R2 as the wallet version (this starter kit uses V4R2)
-10. Save the `TON_MNEMONIC` to your `.env` file in quotes (e.g. `TON_MNEMONIC="..."`)
+1. Download [Tonkeeper Desktop](https://tonkeeper.com/) for Mac, Windows, or Linux
+2. Click **Get started**
+3. Select **New Wallet** to create a mainnet wallet
+4. Set up a passcode and save your **24-word recovery phrase** securely - this is your `TON_MNEMONIC`
+5. Complete the mainnet wallet setup
+6. **Sign out** of the wallet to return to the initial setup screen
+7. Click **Get started** → scroll to **Other Options** → select **Testnet Account**
+8. Enter your 24-word mnemonic
+9. When prompted for wallet version, select **V4R2** (CCIP on TON uses V4R2 addresses)
+10. Name it "Testnet" and complete setup
+11. Save the `TON_MNEMONIC` to your `.env` file in quotes (e.g. `TON_MNEMONIC="word1 word2 ... word24"`)
+
+> **Why V4R2?** V4R2 and W5 are different wallet contract versions on TON. The same mnemonic generates different addresses for each version. CCIP TON infrastructure is built for V4R2. You can add additional versions later via Settings > Active Address.
 
 ### Get TON Center API Key
 
@@ -103,6 +106,8 @@ source .env
 ```bash
 npm run deploy:ton
 ```
+
+> **Rate limited?** Use `https://ton-testnet.api.onfinality.io/public/jsonRPC` as `TON_RPC_URL` in your `.env`
 
 After deployment, add the contract address to your `.env` file as `TON_RECEIVER_ADDRESS` and source the `.env` file:
 
