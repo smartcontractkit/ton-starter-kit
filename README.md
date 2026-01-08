@@ -26,6 +26,8 @@ To interact with TON testnet, you need a wallet and its 24-word recovery phrase 
 9. Select the Gear icon and select V4R2 as the wallet version (this starter kit uses V4R2)
 10. Save the `TON_MNEMONIC` to your `.env` file in quotes (e.g. `TON_MNEMONIC="..."`)
 
+> **Why V4R2?** V4R2 and W5 are different wallet contract versions on TON. The same mnemonic generates different addresses for each version. CCIP TON infrastructure is built for V4R2. You can add additional versions later via Settings > Active Address.
+
 ### Get TON Center API Key
 
 To avoid rate limits when deploying and interacting with TON testnet, get a free API key:
@@ -103,6 +105,8 @@ source .env
 ```bash
 npm run deploy:ton
 ```
+
+> **Rate limited?** Follow the instructions for [TON Center API Key](#get-ton-center-api-key) or use `https://ton-testnet.api.onfinality.io/public/jsonRPC` as `TON_RPC_URL` in your `.env`
 
 After deployment, add the contract address to your `.env` file as `TON_RECEIVER_ADDRESS` and source the `.env` file:
 
