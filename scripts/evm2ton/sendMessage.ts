@@ -89,7 +89,7 @@ async function sendEVMToTON() {
   const messageData = ethers.toUtf8Bytes(argv.msg)
   const router = new ethers.Contract(sourceChain.router, IRouterClientArtifact.abi, wallet)
   const destChainSelector = BigInt(networkConfig.tonTestnet.chainSelector)
-  const message = buildCCIPMessageForTON(receiverBytes, messageData, 100_000_000n, true, selectedFeeToken) // 0.1 TON gas limit
+  const message = buildCCIPMessageForTON(receiverBytes, messageData, 100_000_000n, true, selectedFeeToken) // 0.1 GRAM gas limit
 
   const fee = await getCCIPFeeForTON(router, destChainSelector, message)
   // Add a 10% buffer 

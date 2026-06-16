@@ -45,7 +45,7 @@ const receiverBytes = new Uint8Array(Buffer.from(tonContractAddr, 'base64'))
 const extraArgs = abiCoder.encode(
   ['uint256', 'bool'],
   [
-    100_000_000, // gasLimit in nanoTON (0.1 TON = 100,000,000 nanoTON)
+    100_000_000, // gasLimit in nanoGRAM (0.1 GRAM = 100,000,000 nanoGRAM)
     true     // allowOutOfOrderExecution: MUST BE TRUE for TON
   ]
 );
@@ -53,7 +53,7 @@ const extraArgs = abiCoder.encode(
 const finalArgs = ethers.concat(['0x181dcf10', extraArgs]);
 ```
 
-**Important:** For EVM → TON, the `gasLimit` represents the amount of **TON (in nanoTON)** allocated for executing the message on TON. This is different from EVM gas semantics. The scripts use `100_000_000n` (0.1 TON) as the default.
+**Important:** For EVM → TON, the `gasLimit` represents the amount of **GRAM (in nanoGRAM)** allocated for executing the message on TON. This is different from EVM gas semantics. The scripts use `100_000_000n` (0.1 GRAM) as the default.
 
 ### Data Payload (EVM → TON)
 *   **Input:** `bytes` (EVM side)
@@ -108,7 +108,7 @@ const extraArgs = beginCell()
   .endCell();
 ```
 
-**Important:** For TON → EVM, the `gasLimit` is in **EVM gas units** (not nanoTON). The scripts use `100_000` EVM gas units as the default.
+**Important:** For TON → EVM, the `gasLimit` is in **EVM gas units** (not nanoGRAM). The scripts use `100_000` EVM gas units as the default.
 
 ### Data Payload (TON → EVM)
 *   **Input:** `Cell` (TON side)
@@ -153,5 +153,5 @@ The parser interprets the first bit of `100000` (which is `0`) as the presence f
 | **Address Format** | 36 Bytes (base64-decoded user-friendly: 1B flags + 1B workchain + 32B hash + 2B CRC) | 32 Bytes zero-padded (12B zeros + 20B address), length-prefixed by `CrossChainAddress` |
 | **Ordering** | `allowOutOfOrder = true` (Mandatory) | `allowOutOfOrder = true` (Recommended) |
 | **ExtraArgs Fmt** | ABI Encoded (`bytes`) | TL-B Encoded (`Cell`) |
-| **gasLimit units** | nanoTON (e.g. `100_000_000n` = 0.1 TON) | EVM gas units (e.g. `100_000`) |
+| **gasLimit units** | nanoGRAM (e.g. `100_000_000n` = 0.1 GRAM) | EVM gas units (e.g. `100_000`) |
 | **Data Format** | `bytes` → Wrapped in `Cell` | `Cell` → Unwrapped to `bytes` |

@@ -16,8 +16,8 @@
 //
 // IMPORTANT: The Receiver library is still in early development. Always
 // benchmark your contract and set MIN_VALUE to cover your actual execution
-// costs. The Router needs at least 0.02 TON to process the confirmation
-// message — use 0.03 TON as a safe baseline and increase from there.
+// costs. The Router needs at least 0.02 GRAM to process the confirmation
+// message — use 0.03 GRAM as a safe baseline and increase from there.
 
 import "../chainlink-ton/contracts/contracts/lib/utils"             // emit
 import "../chainlink-ton/contracts/contracts/lib/receiver/types"    // Any2TVMMessage
@@ -42,8 +42,8 @@ fun Storage.store(self) {
 
 /// Minimum value (gas limit) the sender must attach to a CCIPReceive message.
 ///
-/// The Router needs at least 0.02 TON to forward the confirmation back through the
-/// protocol chain. Use 0.03 TON as a baseline and increase it to cover your own
+/// The Router needs at least 0.02 GRAM to forward the confirmation back through the
+/// protocol chain. Use 0.03 GRAM as a baseline and increase it to cover your own
 /// execution costs. Benchmark your contract logic and set this accordingly.
 const MIN_VALUE: coins = ton("0.03");
 
@@ -69,7 +69,7 @@ fun onInternalMessage(in: InMessage) {
             //   1. Verifies the sender is the authorized CCIP Router.
             //   2. Verifies the attached value meets MIN_VALUE.
             //   3. Sends CCIPReceiveConfirm back to the Router, forwarding
-            //      all remaining TON via SEND_MODE_CARRY_ALL_REMAINING_MESSAGE_VALUE.
+            //      all remaining GRAM via SEND_MODE_CARRY_ALL_REMAINING_MESSAGE_VALUE.
             msg.validateAndConfirm({
                 router: st.router,
                 minValue: MIN_VALUE,
@@ -87,7 +87,7 @@ fun onInternalMessage(in: InMessage) {
             // ★ YOUR LOGIC ENDS HERE
         }
         else => {
-            // Ignore plain TON transfers; reject unknown opcodes.
+            // Ignore plain GRAM transfers; reject unknown opcodes.
             assert(in.body.isEmpty()) throw 0xFFFF;
         }
     }

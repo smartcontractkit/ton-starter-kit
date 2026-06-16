@@ -52,7 +52,7 @@ async function main() {
   console.log('📤 Deploying from wallet:', walletFormats.bounceableNonTestable);
   console.log('Explorer:', walletExplorerLinks.bounceableNonTestableUrl);
   const balance = await walletContract.getBalance();
-  console.log('💰 Wallet balance:', fromNano(balance), 'TON\n');
+  console.log('💰 Wallet balance:', fromNano(balance), 'GRAM\n');
 
   // Compile contract
   console.log(`⏳ Compiling ${contractName}.tolk...`);

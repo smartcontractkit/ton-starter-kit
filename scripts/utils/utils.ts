@@ -20,12 +20,12 @@ export function encodeEVMAddress(evmAddr: string): Buffer {
 
 /**
  * [EVM → TON] Encodes GenericExtraArgsV2 as ABI bytes for the EVM CCIP Router.
- * gasLimit is in nanoTON (e.g. 100_000_000n = 0.1 TON).
+ * gasLimit is in nanoGRAM (e.g. 100_000_000n = 0.1 GRAM).
  */
-export function buildExtraArgsForTON(gasLimitNanoTON: bigint | number, allowOutOfOrderExecution: boolean): Uint8Array {
+export function buildExtraArgsForTON(gasLimitNanoGRAM: bigint | number, allowOutOfOrderExecution: boolean): Uint8Array {
   const encoded = ethers.AbiCoder.defaultAbiCoder().encode(
     ['uint256', 'bool'],
-    [gasLimitNanoTON, allowOutOfOrderExecution]
+    [gasLimitNanoGRAM, allowOutOfOrderExecution]
   )
   return ethers.getBytes(ethers.concat([GENERIC_EXTRA_ARGS_V2_TAG, encoded]))
 }
@@ -73,7 +73,7 @@ export function buildCCIPMessageForEVM(
 export function buildCCIPMessageForTON(
   receiver: Uint8Array,
   data: Uint8Array,
-  gasLimitNanoTON: bigint | number,
+  gasLimitNanoGRAM: bigint | number,
   allowOutOfOrderExecution: boolean,
   feeToken: string = ethers.ZeroAddress
 ) {
@@ -82,7 +82,7 @@ export function buildCCIPMessageForTON(
     data,
     tokenAmounts: [],
     feeToken,
-    extraArgs: buildExtraArgsForTON(gasLimitNanoTON, allowOutOfOrderExecution)
+    extraArgs: buildExtraArgsForTON(gasLimitNanoGRAM, allowOutOfOrderExecution)
   }
 }
 

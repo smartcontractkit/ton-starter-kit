@@ -68,11 +68,11 @@ async function sendTONToEVM() {
 
   // Check balance
   const balance = await client.getBalance(wallet.address)
-  console.log('💰 Balance:', fromNano(balance), 'TON\n')
+  console.log('💰 Balance:', fromNano(balance), 'GRAM\n')
 
   if (balance < toNano('0.1')) {
-    console.error('❌ Insufficient balance. Need at least 0.1 TON')
-    console.log('Get testnet TON from @testgiver_ton_bot on Telegram')
+    console.error('❌ Insufficient balance. Need at least 0.1 GRAM')
+    console.log('Get testnet GRAM from @testgiver_ton_bot on Telegram')
     return
   }
 
@@ -107,11 +107,11 @@ async function sendTONToEVM() {
   // Add a 10% buffer
   const feeWithBuffer = (fee * 110n) / 100n
   // Fixed gas execution cost at the source (covers wallet-level gas and source execution)
-  const gasReserve = 500_000_000n // 0.5 TON
+  const gasReserve = 500_000_000n // 0.5 GRAM
 
-  console.log(`💸 Estimated CCIP fee: ${fee.toString()} nanoTON (${fromNano(fee)} TON)`)
-  console.log(`💸 Fee with 10% buffer: ${feeWithBuffer.toString()} nanoTON (${fromNano(feeWithBuffer)} TON)`)
-  console.log(`💸 Gas reserve: ${fromNano(gasReserve)} TON`)
+  console.log(`💸 Estimated CCIP fee: ${fee.toString()} nanoGRAM (${fromNano(fee)} GRAM)`)
+  console.log(`💸 Fee with 10% buffer: ${feeWithBuffer.toString()} nanoGRAM (${fromNano(feeWithBuffer)} GRAM)`)
+  console.log(`💸 Gas reserve: ${fromNano(gasReserve)} GRAM`)
 
   const ccipSendCell = buildCCIPMessageForEVM(
     ccipSendMessage.queryID, // seqno is used as queryID: unique per wallet, monotonically increasing, collision-free
@@ -128,13 +128,13 @@ async function sendTONToEVM() {
     const senderOverhead = toNano('0.1')
     const valueToAttach = feeWithBuffer + gasReserve
 
-    console.log(`💸 Value to attach to Router: ${fromNano(valueToAttach)} TON`)
-    console.log(`💸 Sender overhead: ${fromNano(senderOverhead)} TON`)
-    console.log(`💸 Total to send: ${fromNano(valueToAttach + senderOverhead)} TON`)
+    console.log(`💸 Value to attach to Router: ${fromNano(valueToAttach)} GRAM`)
+    console.log(`💸 Sender overhead: ${fromNano(senderOverhead)} GRAM`)
+    console.log(`💸 Total to send: ${fromNano(valueToAttach + senderOverhead)} GRAM`)
 
     if (balance < valueToAttach + senderOverhead) {
       console.error(
-        `❌ Insufficient balance. Required at least ${fromNano(valueToAttach + senderOverhead)} TON (fee + gas reserve + sender overhead), have ${fromNano(balance)} TON.`
+        `❌ Insufficient balance. Required at least ${fromNano(valueToAttach + senderOverhead)} GRAM (fee + gas reserve + sender overhead), have ${fromNano(balance)} GRAM.`
       )
       return
     }
@@ -162,7 +162,7 @@ async function sendTONToEVM() {
   } else {
     if (balance < feeWithBuffer + gasReserve) {
       console.error(
-        `❌ Insufficient balance for quoted fee. Required at least ${fromNano(feeWithBuffer + gasReserve)} TON (fee + gas reserve), have ${fromNano(balance)} TON.`
+        `❌ Insufficient balance for quoted fee. Required at least ${fromNano(feeWithBuffer + gasReserve)} GRAM (fee + gas reserve), have ${fromNano(balance)} GRAM.`
       )
       console.log('Try funding the wallet or lowering gas limit for cheaper execution.')
       return

@@ -87,7 +87,7 @@ This starter kit includes three receiver contracts for EVM → TON messaging:
 
 The three mandatory steps every TON CCIP receiver must implement:
 1. Accept `CCIPReceive` messages **only from the authorized CCIP Router**
-2. Verify the attached value (gas limit) is **sufficient** — the Router needs at least 0.02 TON to process the confirmation, so `MIN_VALUE` should be set above that and account for your own execution costs
+2. Verify the attached value (gas limit) is **sufficient** — the Router needs at least 0.02 GRAM to process the confirmation, so `MIN_VALUE` should be set above that and account for your own execution costs
 3. Send `Router_CCIPReceiveConfirm` back to the Router so the protocol marks the message as delivered
 
 > **Note:** `receiver_with_validateAndConfirm.tolk` uses the Receiver library helper which is still in early development. For complex receivers, prefer `minimal_receiver.tolk` and implement the steps inline.

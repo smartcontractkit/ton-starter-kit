@@ -5,7 +5,7 @@
 //
 //   1. Accept CCIPReceive messages ONLY from the authorized CCIP Router.
 //   2. Verify the attached value (gas limit) is sufficient.
-//      The Router needs at least 0.02 TON to process the confirmation message,
+//      The Router needs at least 0.02 GRAM to process the confirmation message,
 //      so MIN_VALUE should be set above that and account for your own execution costs.
 //   3. Send Router_CCIPReceiveConfirm back to the Router so the protocol can mark
 //      the message as successfully delivered.
@@ -42,8 +42,8 @@ fun Storage.store(self) {
 
 /// Minimum value (gas limit) the sender must attach to a CCIPReceive message.
 ///
-/// The Router needs at least 0.02 TON to forward the confirmation back through the
-/// protocol chain. Use 0.03 TON as a baseline and increase it to cover your own
+/// The Router needs at least 0.02 GRAM to forward the confirmation back through the
+/// protocol chain. Use 0.03 GRAM as a baseline and increase it to cover your own
 /// execution costs. Benchmark your contract logic and set this accordingly.
 const MIN_VALUE: coins = ton("0.03");
 
@@ -74,12 +74,12 @@ fun onInternalMessage(in: InMessage) {
             assert(in.senderAddress == st.router) throw (Receiver_Error.Unauthorized as int);
 
             // 2. Verify enough value is attached to cover gas costs.
-            //    The Router needs at least 0.02 TON for the confirmation message.
+            //    The Router needs at least 0.02 GRAM for the confirmation message.
             //    Increase MIN_VALUE to account for your contract's execution costs.
             assert(in.valueCoins >= MIN_VALUE) throw (Receiver_Error.LowValue as int);
 
             // 3. Send CCIPReceiveConfirm back to the Router.
-            //    SEND_MODE_CARRY_ALL_REMAINING_MESSAGE_VALUE forwards all remaining TON
+            //    SEND_MODE_CARRY_ALL_REMAINING_MESSAGE_VALUE forwards all remaining GRAM
             //    (gas limit minus fees so far) to pay for the confirmation transaction.
             val receiveConfirm = createMessage({
                 bounce: true,
@@ -97,7 +97,7 @@ fun onInternalMessage(in: InMessage) {
             // ★ YOUR LOGIC ENDS HERE
         }
         else => {
-            // Ignore plain TON transfers; reject unknown opcodes.
+            // Ignore plain GRAM transfers; reject unknown opcodes.
             assert(in.body.isEmpty()) throw 0xFFFF;
         }
     }
