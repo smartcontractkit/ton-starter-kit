@@ -138,7 +138,7 @@ async function verifyTONReceiver() {
     console.log('   Message ID:         ', messageId)
     console.log('   CCIP Explorer:      ', `${ccipExplorerUrl}/${messageId}`)
   }
-  console.log('   Value:              ', latest.value, 'TON')
+  console.log('   Value:              ', latest.value, 'GRAM')
   console.log('   Message:            ', foundMessage ? `"${foundMessage}"` : '(unable to decode)')
   console.log('   Time:               ', latest.time.toISOString())
   console.log('   TX Hash:            ', destinationTxHash)

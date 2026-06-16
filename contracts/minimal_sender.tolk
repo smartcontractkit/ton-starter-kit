@@ -7,7 +7,7 @@
 //
 // The contract:
 //   1. Receives a RelayCCIPSend message containing the pre-built CCIPSend message
-//      and the TON value to forward to the Router.
+//      and the GRAM value to forward to the Router.
 //   2. Forwards the Router_CCIPSend to the CCIP Router with the specified value.
 //   3. Handles Router ACK/NACK responses — replace the handlers with your product logic.
 //
@@ -21,11 +21,11 @@ import "../chainlink-ton/contracts/contracts/ccip/router/messages"  // Router_CC
 /// Sent to this contract to trigger a CCIP send.
 ///
 /// routerAddress: the CCIP Router to forward the message to.
-/// valueToAttach: the TON amount to attach when forwarding to the Router.
+/// valueToAttach: the GRAM amount to attach when forwarding to the Router.
 ///               Must cover the CCIP fee — query getCCIPFee off-chain before sending.
 ///               The total value sent to this contract must be valueToAttach plus
-///               enough extra to cover this contract's own execution costs (~0.1 TON).
-///               Any TON surplus above compute costs is returned via ACK (message accepted)
+///               enough extra to cover this contract's own execution costs (~0.1 GRAM).
+///               Any GRAM surplus above compute costs is returned via ACK (message accepted)
 ///               or NACK (message rejected — both fee and surplus are returned).
 /// message: the pre-built Router_CCIPSend message cell.
 struct (0x00000001) CCIPSender_RelayCCIPSend {
@@ -50,19 +50,19 @@ fun onInternalMessage(in: InMessage) {
         Router_CCIPSendACK => {
             // ★ CCIP message was accepted by the Router.
             //   msg.messageId contains the unique CCIP message ID.
-            //   Any TON surplus above compute costs is returned here; the fee is not refunded.
+            //   Any GRAM surplus above compute costs is returned here; the fee is not refunded.
             //   Add your on-chain success handling here (e.g. update state, emit event).
             return;
         }
         Router_CCIPSendNACK => {
             // ★ CCIP send was rejected by the Router.
-            //   Both the fee and any TON surplus are returned here since the message was not accepted.
+            //   Both the fee and any GRAM surplus are returned here since the message was not accepted.
             //   msg.error contains the Router exit code indicating the rejection reason.
             //   Add your on-chain failure handling here (e.g. refund, retry logic).
             throw msg.error;
         }
         else => {
-            // Ignore plain TON transfers; reject unknown opcodes.
+            // Ignore plain GRAM transfers; reject unknown opcodes.
             assert(in.body.isEmpty()) throw 0xFFFF;
         }
     }
